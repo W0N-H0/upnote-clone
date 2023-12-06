@@ -9,11 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "rgb(var(--background))",
-        foreground: "rgb(var(--foreground))",
-        border: "rgb(var(--border))",
-        input: "rgb(var(--input))",
-        focus: "rgb(var(--focus))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: "hsl(var(--primary))",
+        secondary: "hsl(var(--secondary))",
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        focus: "hsl(var(--focus))",
       },
     },
   },
