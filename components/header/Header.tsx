@@ -1,30 +1,24 @@
 import Input from "../common/Input";
 import Button from "../common/Button";
-import {
-  MdMenu,
-  MdArrowForwardIos,
-  MdArrowBackIos,
-  MdOutlineRefresh,
-} from "react-icons/md";
+import HeaderTooltip from "./HeaderTooltip";
+import { headerDataLeft, headerDataRight } from "@/constants/headerData";
 import { IoIosSearch } from "react-icons/io";
-import { FiSettings } from "react-icons/fi";
 
 const Header: React.FC = () => {
   return (
     <header className="flex w-full h-full px-2 items-center gap-2 border-border border-b-[1px]">
       <div className="flex justify-center items-center gap-3 px-4">
-        <MdMenu size="25" color="#878787" className="mr-1 cursor-pointer" />
-        <MdArrowBackIos size="20" color="#878787" className="cursor-pointer" />
-        <MdArrowForwardIos
-          size="20"
-          color="#878787"
-          className="cursor-pointer"
-        />
-        <MdOutlineRefresh
-          size="25"
-          color="#878787"
-          className="cursor-pointer"
-        />
+        {headerDataLeft.map((item, index) => (
+          <HeaderTooltip
+            key={index}
+            tooltip={item.tooltip}
+            shortcut={item.shortcut}
+            translateX={item.translateX}
+            index={index}
+          >
+            <item.icon size={item.size} color={item.color} />
+          </HeaderTooltip>
+        ))}
       </div>
 
       <div className="flex relative items-center w-[20%]">
@@ -37,8 +31,21 @@ const Header: React.FC = () => {
       </div>
 
       <div className="flex ml-auto items-center px-4 gap-3">
-        <Button className="m-1">New Note</Button>
-        <FiSettings size="30" color="#878787" className="cursor-pointer" />
+        <Button className="m-1 px-4 hover:bg-[#0068ac] bg-secondary">
+          New Note
+        </Button>
+        <div className="flex justify-center items-center gap-3">
+          {headerDataRight.map((item, index) => (
+            <HeaderTooltip
+              key={index}
+              tooltip={item.tooltip}
+              shortcut={item.shortcut}
+              translateX={item.translateX}
+            >
+              <item.icon size={item.size} color={item.color} />
+            </HeaderTooltip>
+          ))}
+        </div>
       </div>
     </header>
   );
