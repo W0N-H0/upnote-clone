@@ -6,7 +6,7 @@ export interface ButtonProps
 const Button: React.FC<ButtonProps> = ({ className, ...props }) => {
   return (
     <button
-      className={`flex justify-center items-center text-background h-10 w-full rounded-md border-none text-sm outline-none ${className}`}
+      className={`flex justify-center items-center text-background h-10 rounded-md border-none text-sm outline-none ${className}`}
       {...props}
     />
   );

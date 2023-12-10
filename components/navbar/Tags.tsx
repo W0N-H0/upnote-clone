@@ -5,11 +5,11 @@ import Button from "../common/Button";
 
 const Tags: React.FC = () => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center hover:bg-primary/10 w-full">
       <Button className="m-0 p-0 w-[25px]">
         <MdKeyboardArrowRight color="gray" size="20" />
       </Button>
-      <div className="ml-2 text-secondary font-normal">TAGS</div>
+      <div className="ml-2 text-secondary font-normal cursor-pointer">TAGS</div>
     </div>
   );
 };

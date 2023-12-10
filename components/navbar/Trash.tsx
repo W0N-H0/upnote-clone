@@ -5,8 +5,10 @@ import Button from "../common/Button";
 
 const Trash: React.FC = () => {
   return (
-    <div className="flex h-[40px] items-center">
-      <div className="ml-7  text-secondary font-normal">TRASH</div>
+    <div className="flex h-[40px] items-center hover:bg-primary/10 w-full">
+      <div className="ml-[33px]  text-secondary font-normal cursor-pointer">
+        TRASH
+      </div>
     </div>
   );
 };
