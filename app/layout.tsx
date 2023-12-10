@@ -12,7 +12,7 @@ interface Metadata {
 export const metadata: Metadata = {
   title: "UpNote clone",
   description: "UpNote clone site",
-  icons: "/favicon.ico",
+  icons: "/icon.png",
 };
 
 export default function RootLayout({
