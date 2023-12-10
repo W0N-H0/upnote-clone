@@ -1,10 +1,38 @@
+"use client";
+
 import Input from "../common/Input";
 import Button from "../common/Button";
 import HeaderTooltip from "./HeaderTooltip";
 import { headerDataLeft, headerDataRight } from "@/constants/headerData";
 import { IoIosSearch } from "react-icons/io";
+import useNoteStore from "@/store/useNoteStore";
+import useNotebookStore from "@/store/useNotebookStore";
+import { Note } from "@/store/useNoteStore";
 
 const Header: React.FC = () => {
+  const { addNote } = useNoteStore();
+  const { addNotebook } = useNotebookStore();
+
+  const handleAddNote = () => {
+    const newNote: Note = {
+      id: 1,
+      title: "New Note",
+      content: `{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"testtest\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}`,
+      createdAt: new Date(),
+      notebook: null,
+    };
+    addNote(newNote);
+  };
+
+  const handleAddNotebook = () => {
+    const newNotebook = {
+      name: "New Notebook",
+      imageCode: 0,
+      notes: [],
+    };
+    addNotebook(newNotebook);
+  };
+
   return (
     <header className="flex w-full h-full px-2 items-center gap-2 border-border border-b-[1px]">
       <div className="flex justify-center items-center gap-3 px-4">
@@ -21,17 +49,24 @@ const Header: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex relative items-center w-[20%]">
+      <div className="flex relative items-center">
         <IoIosSearch
           size="28"
           color="#878787"
           className="absolute z-10 p-[2px] translate-x-2"
         />
-        <Input type="text" placeholder="Search" className="pl-10"></Input>
+        <Input
+          type="text"
+          placeholder="Search"
+          className="pl-10 w-[350px]"
+        ></Input>
       </div>
 
       <div className="flex ml-auto items-center px-4 gap-3">
-        <Button className="m-1 px-4 hover:bg-[#0068ac] bg-secondary">
+        <Button
+          className="m-1 px-4 hover:bg-[#0068ac] bg-secondary"
+          onClick={handleAddNote}
+        >
           New Note
         </Button>
         <div className="flex justify-center items-center gap-3">
