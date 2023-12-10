@@ -2,8 +2,8 @@
 import useNoteStore from "@/store/useNoteStore";
 import dynamic from "next/dynamic";
 import EmptyPage from "./_components/EmptyPage";
-import NoteDetails from "./_components/NoteDetails";
 import { useState, useEffect } from "react";
+import { Editor } from "@/components/editor/Editor";
 
 const NoteList = dynamic(() => import("@/components/common/NoteList"), {
   ssr: false,
@@ -28,7 +28,7 @@ const Notes: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
       ) : (
         <>
           <NoteList data={notes} />
-          {/* <NoteDetails /> */}
+
           {children}
         </>
       )}

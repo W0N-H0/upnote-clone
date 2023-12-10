@@ -8,16 +8,18 @@ import { IoIosSearch } from "react-icons/io";
 import useNoteStore from "@/store/useNoteStore";
 import useNotebookStore from "@/store/useNotebookStore";
 import { Note } from "@/store/useNoteStore";
+import { generateUniqueNoteId } from "@/utils/idGenerator";
 
 const Header: React.FC = () => {
-  const { addNote } = useNoteStore();
+  const { addNote, notes } = useNoteStore();
   const { addNotebook } = useNotebookStore();
 
   const handleAddNote = () => {
     const newNote: Note = {
-      id: 1,
+      id: generateUniqueNoteId(notes),
       title: "New Note",
-      content: `{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"testtest\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}`,
+      body: "No additional text",
+      content: `{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}`,
       createdAt: new Date(),
       notebook: null,
     };

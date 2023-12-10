@@ -2,32 +2,30 @@
 import React, { useState, useEffect } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
 import Button from "../common/Button";
-import { Note } from "@/store/useNoteStore";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const Allnotes: React.FC = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
   const router = useRouter();
-
-  const fetchNotes = () => {
-    const storedNotes = localStorage.getItem("notes");
-    const parsedNotes = storedNotes ? JSON.parse(storedNotes) : [];
-    setNotes(parsedNotes);
-  };
+  const pathname = usePathname();
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
-
-  const toggleNotesVisibility = () => {
-    setIsOpen((prev) => !prev);
-  };
+    // pathname에 "notes"가 포함되어 있으면 isSelected를 true로 설정
+    if (pathname.includes("notes")) {
+      setIsSelected(true);
+    } else {
+      setIsSelected(false);
+    }
+  }, [pathname]);
 
   return (
-    <div className="flex items-center w-full hover:bg-primary/10">
-      <Button className="m-0 p-0 w-[25px]" onClick={toggleNotesVisibility}>
-        {isOpen ? (
+    <div
+      className={`flex items-center w-full hover:bg-primary/10 ${
+        isSelected ? "bg-primary/10 border-border" : null
+      }`}
+    >
+      <Button className="m-0 p-0 w-[25px]">
+        {isSelected ? (
           <MdKeyboardArrowDown color="gray" size="20" />
         ) : (
           <MdKeyboardArrowRight color="gray" size="20" />
@@ -41,16 +39,6 @@ const Allnotes: React.FC = () => {
       >
         ALL notes
       </div>
-      {/* notes 렌더링 */}
-      {isOpen && (
-        <ul className="flex">
-          {notes.map((note, index) => (
-            <li key={index}>
-              {note.title} - {note.content} - {note.createdAt.toString()}
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 };

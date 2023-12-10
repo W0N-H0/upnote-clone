@@ -4,15 +4,17 @@ import useNoteStore from "@/store/useNoteStore";
 import Image from "next/image";
 import blob from "@/public/assets/blob.png";
 import { Note } from "@/store/useNoteStore";
+import { generateUniqueNoteId } from "@/utils/idGenerator";
 
 const EmptyPage: React.FC = () => {
-  const { addNote } = useNoteStore();
+  const { addNote, notes } = useNoteStore();
 
   const handleAddNote = () => {
     const newNote: Note = {
-      id: 1,
+      id: generateUniqueNoteId(notes),
       title: "New Note",
-      content: "No additional text",
+      body: "No additional text",
+      content: `{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}`,
       createdAt: new Date(),
       notebook: null,
     };

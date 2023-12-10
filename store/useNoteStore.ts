@@ -3,6 +3,7 @@ import { create } from "zustand";
 export interface Note {
   id: number;
   title: string;
+  body: string;
   content: string;
   createdAt: Date;
   notebook: string | null; // 별도의 notebook에 속하지 않으면 null = uncatagorized
