@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={Pretendard.className}>
-      <body className="flex flex-col w-full h-full min-w-[1400px] max-w-[1920px]">
+      <body className="flex flex-col min-w-[1400px] max-w-[1920px]">
         <Toaster
           containerStyle={{
             fontSize: "0.875rem",
