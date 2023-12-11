@@ -3,8 +3,9 @@ import { Note } from "./useNoteStore";
 
 // Notebook 인터페이스 선언
 interface Notebook {
+  id: number;
   name: string;
-  imageCode: number;
+  imageIndex: number;
   notes: Note[];
 }
 
