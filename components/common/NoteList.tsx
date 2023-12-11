@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Note } from "@/store/useNoteStore";
+import { Notebook } from "@/store/useNotebookStore";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
 import useNoteStore from "@/store/useNoteStore";

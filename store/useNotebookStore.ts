@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Note } from "./useNoteStore";
 
 // Notebook 인터페이스 선언
-interface Notebook {
+export interface Notebook {
   id: number;
   name: string;
   imageIndex: number;

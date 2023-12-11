@@ -25,7 +25,7 @@ const Notebooks: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-center hover:bg-primary/10 text-[0.9em]">
+      <div className="flex items-center text-[0.9em]">
         <Button className="m-0 p-0 w-[25px]" onClick={handleIconClick}>
           {isOpen ? (
             <MdKeyboardArrowDown color="gray" size="20" />
@@ -33,7 +33,10 @@ const Notebooks: React.FC = () => {
             <MdKeyboardArrowRight color="gray" size="20" />
           )}
         </Button>
-        <div className="ml-2 text-secondary font-normal cursor-pointer">
+        <div
+          className="ml-2 text-secondary font-normal cursor-pointer"
+          onClick={() => router.push("/notebooks")}
+        >
           NOTEBOOKS
         </div>
         <Button className="ml-16 w-[25px] mb-[1px] ">

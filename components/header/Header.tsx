@@ -30,7 +30,7 @@ const Header: React.FC = () => {
     const newNotebook = {
       id: 1,
       name: "New Notebook",
-      imageCode: 0,
+      imageIndex: 0,
       notes: [],
     };
     addNotebook(newNotebook);
