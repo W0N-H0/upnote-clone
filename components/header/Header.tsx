@@ -28,6 +28,7 @@ const Header: React.FC = () => {
 
   const handleAddNotebook = () => {
     const newNotebook = {
+      id: 1,
       name: "New Notebook",
       imageCode: 0,
       notes: [],

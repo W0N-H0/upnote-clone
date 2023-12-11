@@ -5,7 +5,7 @@ import Button from "../common/Button";
 
 const Tags: React.FC = () => {
   return (
-    <div className="flex items-center hover:bg-primary/10 w-full">
+    <div className="flex items-center hover:bg-primary/10 w-full text-[0.9em]">
       <Button className="m-0 p-0 w-[25px]">
         <MdKeyboardArrowRight color="gray" size="20" />
       </Button>
