@@ -21,6 +21,11 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
   const { id } = useParams();
   const noteId = Number(id);
 
+  // 날짜를 기준으로 최신순으로 정렬
+  const sortedData = data.sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   // 노트를 클릭했을 때의 동작을 정의
   const handleNoteClick = (id: number) => {
     router.push(`/notes/${id}`); // 클릭한 노트의 ID를 사용하여 해당 노트의 페이지로 이동
@@ -48,7 +53,7 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
       </div>
 
       <ul className="flex flex-col">
-        {data.map((note, index) => (
+        {sortedData.map((note, index) => (
           <li
             key={index}
             className={`${index === noteId - 1 ? "bg-secondary/10" : ""}`}
