@@ -17,7 +17,7 @@ interface NoteListProps {
 }
 
 const NoteList: React.FC<NoteListProps> = ({ data }) => {
-  const { notebooks } = useNotebookStore();
+  const { notebooks, updateNotebook } = useNotebookStore();
   const [isNotePage, setIsNotePage] = useState<Boolean>(false);
   const { deleteNote } = useNoteStore();
   const router = useRouter();
@@ -52,7 +52,7 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
     }
   };
 
-  // 삭제 버튼 클릭시 핸들러함수
+  // 삭제 버튼 클릭시 핸들러함수 (노트 삭제)
   const handleDeleteNote = async (id: number) => {
     const shouldDelete = window.confirm("정말 삭제하시겠습니까?");
     if (shouldDelete) {
@@ -66,7 +66,43 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
       }
     }
   };
+  const notebookIndex = notebooks.findIndex(
+    (notebook) => notebook.id === noteId
+  );
+  console.log(notebookIndex);
+  // 삭제 버튼 클릭시 핸들러함수 (노트북 내 노트 삭제)
+  const handleDeleteNoteInNotebook = async (noteId: number) => {
+    const shouldDelete = window.confirm("정말 삭제하시겠습니까?");
+    if (shouldDelete) {
+      try {
+        // notebooks에서 노트 삭제
+        const notebookIndex = notebooks.findIndex((notebook) =>
+          notebook.notes.some((note) => note.id === noteId)
+        );
+        if (notebookIndex === -1) {
+          console.error("Cannot find the notebook to delete note.");
+          return;
+        }
+        const updatedNotebook: Notebook = {
+          ...notebooks[notebookIndex],
+          notes: notebooks[notebookIndex].notes.filter(
+            (note) => note.id !== noteId
+          ),
+        };
+        updateNotebook(notebookIndex, updatedNotebook);
 
+        // notes에서 노트 삭제
+        await deleteNote(noteId);
+
+        toast.success("삭제되었습니다.");
+        router.push("/notes");
+      } catch (error) {
+        console.error("삭제 중 오류 발생:", error);
+      }
+    }
+  };
+
+  console.log(sortedData);
   return (
     <div className="flex flex-col w-[310px] h-full border-border border-r-[1px] font-light">
       <div className="flex items-center h-[40px] px-5 bg-primary/5 border-border/90 border-b-[1px]">
@@ -91,12 +127,24 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
               </p>
               <p className="flex justify-between items-center text-primary/50 text-[0.85em]">
                 {formatDate(note.createdAt)}
-                <Button
-                  className="text-primary"
-                  onClick={() => handleDeleteNote(note.id)}
-                >
-                  <BsTrash3 size="15" />
-                </Button>
+                {isNotePage ? (
+                  <Button
+                    className="text-primary"
+                    onClick={() => handleDeleteNote(note.id)}
+                  >
+                    <BsTrash3 size="15" />
+                  </Button>
+                ) : (
+                  <Button
+                    className="text-primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteNoteInNotebook(note.id);
+                    }}
+                  >
+                    <BsTrash3 size="15" />
+                  </Button>
+                )}
               </p>
             </div>
           </li>

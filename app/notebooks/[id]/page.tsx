@@ -49,12 +49,11 @@ const NotebookDetails: React.FC = () => {
   };
   return (
     <div className="flex min-w-[1400px] max-w-[1920px] h-full">
-      <div onClick={handleAddNote}>test</div>
       {notebooks[targetNotebookIndex].notes && (
         <NoteList data={notebooks[targetNotebookIndex].notes} />
       )}
       <div className="relative w-[1000px] h-full px-24 py-10">
-        {notebooks[targetNotebookIndex].notes && (
+        {notebooks[targetNotebookIndex].notes.length >= 1 && (
           <Editor
             content={notebooks[targetNotebookIndex].notes[0].content}
             name={notebooks[targetNotebookIndex].notes[0].title}
