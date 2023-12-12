@@ -9,10 +9,14 @@ import useNoteStore from "@/store/useNoteStore";
 import useNotebookStore from "@/store/useNotebookStore";
 import { Note } from "@/store/useNoteStore";
 import { generateUniqueNoteId } from "@/utils/idGenerator";
+import { usePathname, useParams } from "next/navigation";
 
 const Header: React.FC = () => {
   const { addNote, notes } = useNoteStore();
   const { addNotebook } = useNotebookStore();
+  const pathname = usePathname();
+  const { id } = useParams();
+  const isNotebookPage = pathname.includes("notebooks");
 
   const handleAddNote = () => {
     const newNote: Note = {
@@ -21,7 +25,7 @@ const Header: React.FC = () => {
       body: "No additional text",
       content: `{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}`,
       createdAt: new Date(),
-      notebook: null,
+      notebook: isNotebookPage ? Number(id) : null,
     };
     addNote(newNote);
   };
@@ -37,7 +41,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex w-full h-full px-2 items-center gap-2 border-border border-b-[1px]">
+    <header className="flex w-full h-[50px] px-2 items-center gap-2 border-border border-b-[1px]">
       <div className="flex justify-center items-center gap-3 px-4">
         {headerDataLeft.map((item, index) => (
           <HeaderTooltip
