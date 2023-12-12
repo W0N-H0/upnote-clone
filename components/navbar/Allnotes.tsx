@@ -4,9 +4,12 @@ import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
 import { IoDocumentsOutline } from "react-icons/io5";
 import Button from "../common/Button";
 import { useRouter, usePathname } from "next/navigation";
+import useNoteStore from "@/store/useNoteStore";
 
 const Allnotes: React.FC = () => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [noteCount, setNoteCount] = useState(0);
+  const { notes } = useNoteStore();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -17,7 +20,9 @@ const Allnotes: React.FC = () => {
     } else {
       setIsSelected(false);
     }
-  }, [pathname]);
+    // notes.length를 계산
+    setNoteCount(notes.length);
+  }, [pathname, notes]);
 
   return (
     <div
@@ -41,6 +46,9 @@ const Allnotes: React.FC = () => {
         <div className="flex justify-center items-center">
           <IoDocumentsOutline className="mr-2" size="20" />
           ALL notes
+          <span className="px-1 text-[0.9em] text-primary/60">
+            ({noteCount})
+          </span>
         </div>
       </div>
     </div>
