@@ -92,7 +92,7 @@ const CreateNotebook: React.FC<CreateNotebookProps> = ({
   }, []);
 
   return (
-    <div className="z-50 flex flex-col justify-center items-center absolute bg-background rounded-md px-20 py-10 gap-10">
+    <div className="z-10 flex flex-col justify-center items-center absolute bg-background rounded-md px-20 py-10 gap-10">
       <h2 className="font-bold text-[1.5em]">
         {isEditMode ? "Edit Notebook" : "Create New Notebook"}
       </h2>

@@ -14,20 +14,20 @@ import Button from "./Button";
 
 interface NoteListProps {
   data: Note[];
+  isNotebookDetailPage?: Boolean;
 }
 
-const NoteList: React.FC<NoteListProps> = ({ data }) => {
+const NoteList: React.FC<NoteListProps> = ({ data, isNotebookDetailPage }) => {
   const { notebooks, updateNotebook } = useNotebookStore();
   const [isNotePage, setIsNotePage] = useState<Boolean>(false);
   const { deleteNote } = useNoteStore();
   const router = useRouter();
   const pathname = usePathname();
   const { id } = useParams();
-  const noteId = Number(id);
+  const Id = Number(id); // 엔드포인트가 notes일경우 note id, 엔드포인트가 notebooks 일경우 notebook id
 
   // params의 id값으로 notebook의 name추출을 위한 변수
-
-  const matchingNotebook = notebooks.find((notebook) => notebook.id === noteId);
+  const matchingNotebook = notebooks.find((notebook) => notebook.id === Id);
 
   // notes 페이지인지, notebooks 페이지인지 판별하는 useEffect
   useEffect(() => {
@@ -48,7 +48,11 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
     if (isNotePage) {
       router.push(`/notes/${id}`); // 클릭한 노트의 ID를 사용하여 해당 노트의 페이지로 이동
     } else {
-      router.push(`${pathname}/${id}`);
+      if (isNotebookDetailPage) {
+        router.push(`/notebooks/${Id}/${id}`);
+      } else {
+        router.push(`${pathname}/${id}`);
+      }
     }
   };
 
@@ -80,7 +84,11 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
         if (isNotePage) {
           router.push("/notes");
         } else {
-          router.push(`${pathname}`);
+          if (isNotebookDetailPage) {
+            router.push(`/notebooks/${Id}`);
+          } else {
+            router.push(`${pathname}`);
+          }
         }
       } catch (error) {
         console.error("삭제 중 오류 발생:", error);
@@ -88,7 +96,6 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
     }
   };
 
-  console.log(sortedData);
   return (
     <div className="flex flex-col w-[310px] h-full border-border border-r-[1px] font-light">
       <div className="flex items-center h-[40px] px-5 bg-primary/5 border-border/90 border-b-[1px]">
@@ -99,7 +106,7 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
         {sortedData.map((note, index) => (
           <li
             key={index}
-            className={`${note.id === noteId ? "bg-secondary/10" : ""}`}
+            className={`${note.id === Id ? "bg-secondary/10" : ""}`}
             onClick={() => handleNoteClick(note.id)}
           >
             <div
