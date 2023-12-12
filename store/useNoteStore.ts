@@ -6,7 +6,7 @@ export interface Note {
   body: string;
   content: string;
   createdAt: Date;
-  notebook: string | null; // 별도의 notebook에 속하지 않으면 null = uncatagorized
+  notebook: number | null; // 별도의 notebook에 속하지 않으면 null = uncatagorized
 }
 
 interface NoteStore {

@@ -32,6 +32,15 @@ const useNotebookStore = create<NotebookStore>((set) => {
     notebooks: initialNotebooks,
     addNotebook: (notebook) =>
       set((state) => {
+        const notebookExists = state.notebooks.some(
+          (nb) => nb.name === notebook.name
+        );
+        if (notebookExists) {
+          alert(
+            `The name ${notebook.name} is already taken\nplease choose a different name.`
+          );
+          return state;
+        }
         const newNotebooks = [...state.notebooks, notebook];
         // 로컬스토리지에 저장
         localStorage.setItem(localStorageKey, JSON.stringify(newNotebooks));
@@ -39,6 +48,15 @@ const useNotebookStore = create<NotebookStore>((set) => {
       }),
     updateNotebook: (index, updatedNotebook) =>
       set((state) => {
+        const notebookExists = state.notebooks.some(
+          (nb, idx) => idx !== index && nb.name === updatedNotebook.name
+        );
+        if (notebookExists) {
+          alert(
+            `The name ${updatedNotebook.name} is already taken\nplease choose a different name.`
+          );
+          return state;
+        }
         const newNotebooks = [...state.notebooks];
         newNotebooks[index] = updatedNotebook;
         // 로컬스토리지에 저장

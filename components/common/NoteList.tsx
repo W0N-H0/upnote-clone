@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Note } from "@/store/useNoteStore";
 import { Notebook } from "@/store/useNotebookStore";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
 import useNoteStore from "@/store/useNoteStore";
+import useNotebookStore from "@/store/useNotebookStore";
 import { useParams } from "next/navigation";
 import { BsTrash3 } from "react-icons/bs";
 import toast from "react-hot-toast";
@@ -16,10 +17,26 @@ interface NoteListProps {
 }
 
 const NoteList: React.FC<NoteListProps> = ({ data }) => {
+  const { notebooks } = useNotebookStore();
+  const [isNotePage, setIsNotePage] = useState<Boolean>(false);
   const { deleteNote } = useNoteStore();
   const router = useRouter();
+  const pathname = usePathname();
   const { id } = useParams();
   const noteId = Number(id);
+
+  // params의 id값으로 notebook의 name추출을 위한 변수
+
+  const matchingNotebook = notebooks.find((notebook) => notebook.id === noteId);
+
+  // notes 페이지인지, notebooks 페이지인지 판별하는 useEffect
+  useEffect(() => {
+    if (pathname.includes("notes")) {
+      setIsNotePage(true);
+    } else {
+      setIsNotePage(false);
+    }
+  }, [pathname]);
 
   // 날짜를 기준으로 최신순으로 정렬
   const sortedData = data.sort((a, b) => {
@@ -28,7 +45,11 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
 
   // 노트를 클릭했을 때의 동작을 정의
   const handleNoteClick = (id: number) => {
-    router.push(`/notes/${id}`); // 클릭한 노트의 ID를 사용하여 해당 노트의 페이지로 이동
+    if (isNotePage) {
+      router.push(`/notes/${id}`); // 클릭한 노트의 ID를 사용하여 해당 노트의 페이지로 이동
+    } else {
+      router.push(`${pathname}/${id}`);
+    }
   };
 
   // 삭제 버튼 클릭시 핸들러함수
@@ -47,16 +68,16 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col w-[310px] border-border border-r-[1px] font-light">
+    <div className="flex flex-col w-[310px] h-full border-border border-r-[1px] font-light">
       <div className="flex items-center h-[40px] px-5 bg-primary/5 border-border/90 border-b-[1px]">
-        All Notes
+        {isNotePage ? "All Notes" : matchingNotebook?.name}
       </div>
 
       <ul className="flex flex-col">
         {sortedData.map((note, index) => (
           <li
             key={index}
-            className={`${index === noteId - 1 ? "bg-secondary/10" : ""}`}
+            className={`${note.id === noteId ? "bg-secondary/10" : ""}`}
             onClick={() => handleNoteClick(note.id)}
           >
             <div

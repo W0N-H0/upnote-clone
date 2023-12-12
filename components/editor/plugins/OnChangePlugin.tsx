@@ -1,15 +1,19 @@
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { $getRoot, EditorState } from "lexical";
 import useNoteStore from "@/store/useNoteStore";
+import useNotebookStore from "@/store/useNotebookStore";
 import { Note } from "@/store/useNoteStore";
+import { Notebook } from "@/store/useNotebookStore";
 import { debounce } from "@/utils/debounce";
 
 type Props = {
   id: number;
+  notebookId?: number;
 };
 
-export default function OnchangePlugin({ id }: Props) {
+export default function OnchangePlugin({ id, notebookId }: Props) {
   const { updateNote } = useNoteStore();
+  const { notebooks, updateNotebook } = useNotebookStore();
   const onChange = (editorState: EditorState) => {
     editorState.read(() => {
       const content = JSON.stringify(editorState);
@@ -33,10 +37,26 @@ export default function OnchangePlugin({ id }: Props) {
         body: body,
         content: content,
         createdAt: new Date(),
-        notebook: null,
+        notebook: notebookId ? notebookId : null,
       };
 
       updateNote(id, newNote);
+
+      // 노트가 속한 노트북의 notes를 업데이트
+      if (notebookId !== undefined) {
+        const targetNotebookIndex = notebooks.findIndex(
+          (notebook) => notebook.id === notebookId
+        );
+        if (targetNotebookIndex !== -1) {
+          const updatedNotebook: Notebook = {
+            ...notebooks[targetNotebookIndex],
+            notes: notebooks[targetNotebookIndex].notes.map((note) =>
+              note.id === id ? newNote : note
+            ),
+          };
+          updateNotebook(targetNotebookIndex, updatedNotebook);
+        }
+      }
     });
   };
 

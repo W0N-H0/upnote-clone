@@ -13,9 +13,10 @@ type Props = {
   name: string;
   content: string;
   id: number;
+  notebookId?: number;
 };
 
-export const Editor = ({ name, content, id }: Props) => {
+export const Editor = ({ name, content, id, notebookId }: Props) => {
   const initialConfig: InitialConfigType = {
     namespace: "Editor",
     onError: (e: Error) => console.error(e),
@@ -37,7 +38,7 @@ export const Editor = ({ name, content, id }: Props) => {
       />
       <HistoryPlugin />
       <AutoFocusPlugin />
-      <OnchangePlugin id={id} />
+      <OnchangePlugin id={id} notebookId={notebookId} />
     </LexicalComposer>
   );
 };
