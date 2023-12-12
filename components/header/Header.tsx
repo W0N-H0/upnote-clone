@@ -9,14 +9,20 @@ import useNoteStore from "@/store/useNoteStore";
 import useNotebookStore from "@/store/useNotebookStore";
 import { Note } from "@/store/useNoteStore";
 import { generateUniqueNoteId } from "@/utils/idGenerator";
-import { usePathname, useParams } from "next/navigation";
+import { usePathname, useParams, useRouter } from "next/navigation";
+import { Notebook } from "@/store/useNotebookStore";
 
 const Header: React.FC = () => {
   const { addNote, notes } = useNoteStore();
-  const { addNotebook } = useNotebookStore();
+  const { notebooks, updateNotebook } = useNotebookStore();
   const pathname = usePathname();
+  const router = useRouter();
   const { id } = useParams();
-  const isNotebookPage = pathname.includes("notebooks");
+
+  // id와 일치하는 노트북 찾기
+  const targetNotebookIndex = notebooks.findIndex(
+    (notebook) => notebook.id === Number(id)
+  );
 
   const handleAddNote = () => {
     const newNote: Note = {
@@ -25,19 +31,26 @@ const Header: React.FC = () => {
       body: "No additional text",
       content: `{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}`,
       createdAt: new Date(),
-      notebook: isNotebookPage ? Number(id) : null,
+      notebook: Number(id),
     };
+    // 노트북의 id값과 함께 노트 추가
     addNote(newNote);
-  };
 
-  const handleAddNotebook = () => {
-    const newNotebook = {
-      id: 1,
-      name: "New Notebook",
-      imageIndex: 0,
-      notes: [],
-    };
-    addNotebook(newNotebook);
+    // 해당 노트북에도 노트를 추가
+    if (targetNotebookIndex !== -1) {
+      const updatedNotebook: Notebook = {
+        ...notebooks[targetNotebookIndex],
+        notes: [...notebooks[targetNotebookIndex].notes, newNote],
+      };
+
+      // 노트북을 업데이트
+      updateNotebook(targetNotebookIndex, updatedNotebook);
+    }
+
+    // "/" 앤드포인트에서 new note 생성시에 "/notes 앤드포인트로 이동"
+    if (pathname === "/") {
+      router.push("/notes");
+    }
   };
 
   return (
