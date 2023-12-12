@@ -9,6 +9,7 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { IoTrashOutline } from "react-icons/io5";
 import CreateNotebook from "@/components/createNotebook/CreateNotebook";
 import useNotebookStore from "@/store/useNotebookStore";
+import useNoteStore from "@/store/useNoteStore";
 
 type FrameTypeViewProps = {
   handleNotebookClick: (id: number) => void;
@@ -25,6 +26,7 @@ const FrameTypeView: React.FC<FrameTypeViewProps> = ({
     Notebook | undefined
   >(undefined);
   const { deleteNotebook } = useNotebookStore();
+  const { notes, deleteNote } = useNoteStore();
 
   // 노트북을 삭제하는 핸들러함수
   const handNotebookDelete = (notebook: Notebook) => {
@@ -36,6 +38,13 @@ const FrameTypeView: React.FC<FrameTypeViewProps> = ({
     const userConfirmed = window.confirm("Are you sure you want to delete it?");
     if (userConfirmed) {
       deleteNotebook(notebookIndex);
+
+      // 해당 노트북에 속한 모든 노트들을 notes에서도 삭제
+      notes.forEach((note) => {
+        if (note.notebook === notebook.id) {
+          deleteNote(note.id);
+        }
+      });
     }
   };
 
