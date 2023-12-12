@@ -29,7 +29,7 @@ const Notebooks: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-center text-[0.9em]">
+      <div className="flex w-full items-center text-[0.9em] hover:bg-primary/10">
         {isModalOpen && (
           <div className="z-10 fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
             <div
