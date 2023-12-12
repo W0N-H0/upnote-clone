@@ -81,6 +81,7 @@ const NoteList: React.FC<NoteListProps> = ({ data, isNotebookDetailPage }) => {
         updateNotebook(notebookIndex, updatedNotebook);
 
         toast.success("삭제되었습니다.");
+
         if (isNotePage) {
           router.push("/notes");
         } else {
@@ -106,7 +107,7 @@ const NoteList: React.FC<NoteListProps> = ({ data, isNotebookDetailPage }) => {
         {sortedData.map((note, index) => (
           <li
             key={index}
-            className={`${note.id === Id ? "bg-secondary/10" : ""}`}
+            className={`${index === 0 ? "bg-secondary/10" : ""}`}
             onClick={() => handleNoteClick(note.id)}
           >
             <div
