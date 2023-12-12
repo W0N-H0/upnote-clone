@@ -52,29 +52,14 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
     }
   };
 
-  // 삭제 버튼 클릭시 핸들러함수 (노트 삭제)
-  const handleDeleteNote = async (id: number) => {
+  // 삭제 버튼 클릭시 핸들러함수 (노트삭제 + 노트북 내 노트 삭제)
+  const handleDeleteNote = async (noteId: number) => {
     const shouldDelete = window.confirm("정말 삭제하시겠습니까?");
     if (shouldDelete) {
       try {
-        await deleteNote(id);
-        toast.success("삭제되었습니다.");
-        router.push("/notes");
-      } catch (error) {
-        console.error("삭제 중 오류 발생:", error);
-        // 오류 처리 로직 추가
-      }
-    }
-  };
-  const notebookIndex = notebooks.findIndex(
-    (notebook) => notebook.id === noteId
-  );
-  console.log(notebookIndex);
-  // 삭제 버튼 클릭시 핸들러함수 (노트북 내 노트 삭제)
-  const handleDeleteNoteInNotebook = async (noteId: number) => {
-    const shouldDelete = window.confirm("정말 삭제하시겠습니까?");
-    if (shouldDelete) {
-      try {
+        // notes에서 노트 삭제
+        await deleteNote(noteId);
+
         // notebooks에서 노트 삭제
         const notebookIndex = notebooks.findIndex((notebook) =>
           notebook.notes.some((note) => note.id === noteId)
@@ -91,11 +76,12 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
         };
         updateNotebook(notebookIndex, updatedNotebook);
 
-        // notes에서 노트 삭제
-        await deleteNote(noteId);
-
         toast.success("삭제되었습니다.");
-        router.push("/notes");
+        if (isNotePage) {
+          router.push("/notes");
+        } else {
+          router.push(`${pathname}`);
+        }
       } catch (error) {
         console.error("삭제 중 오류 발생:", error);
       }
@@ -139,7 +125,7 @@ const NoteList: React.FC<NoteListProps> = ({ data }) => {
                     className="text-primary"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDeleteNoteInNotebook(note.id);
+                      handleDeleteNote(note.id);
                     }}
                   >
                     <BsTrash3 size="15" />
