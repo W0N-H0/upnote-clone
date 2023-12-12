@@ -6,7 +6,7 @@ const Notes: React.FC = () => {
   const { notes } = useNoteStore();
   return (
     <div className="relative w-[1000px] h-full px-24 py-10">
-      {/* 초기 렌더링 시 id가 1인 note 렌더링*/}
+      {/* 초기 렌더링 시 첫번째 note 렌더링*/}
       <Editor
         content={notes[0].content}
         name={notes[0].title}

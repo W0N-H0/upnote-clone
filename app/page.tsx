@@ -2,7 +2,7 @@ import Image from "next/image";
 import welcome from "@/public/assets/welcome.png";
 export default function Home() {
   return (
-    <main className="w-full h-screen flex flex-col justify-center items-center pb-40 gap-4">
+    <main className="w-full h-full flex flex-col justify-center items-center pb-40 gap-4">
       <Image
         src={welcome}
         alt="welecome img"

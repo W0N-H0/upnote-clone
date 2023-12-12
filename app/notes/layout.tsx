@@ -22,7 +22,7 @@ const Notes: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   }, [notes]);
 
   return (
-    <div className="flex">
+    <div className="flex h-full">
       {isEmptyPage ? (
         <EmptyPage />
       ) : (

@@ -25,7 +25,7 @@ const Notebooks: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full font-light">
+    <div className="w-full h-full font-light ">
       <div className="flex justify-between bg-primary/5 border-border border-b-[1px]">
         <div className="flex py-2 px-10">
           <h1>Notebooks</h1>

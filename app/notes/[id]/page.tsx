@@ -7,10 +7,10 @@ const NoteDetails: React.FC = () => {
   const { notes } = useNoteStore();
   const { id } = useParams();
 
-  // ID 값을 사용하여 notes에서 해당하는 노트를 찾습니다.
+  // ID 값을 사용하여 notes에서 해당하는 노트를 찾기
   const note = notes.find((note) => note.id === Number(id));
 
-  // 해당하는 노트가 없는 경우 에러 메시지를 표시하도록 합니다.
+  // 해당하는 노트가 없는 경우 에러 메시지를 표시
   if (!note) {
     return <div className="px-24 py-10">해당하는 노트를 찾을 수 없습니다.</div>;
   }
@@ -22,6 +22,7 @@ const NoteDetails: React.FC = () => {
         name={note.title}
         key={note.id}
         id={note.id}
+        notebookId={note.notebook ? note.notebook : undefined}
       />
     </div>
   );

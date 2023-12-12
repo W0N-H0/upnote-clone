@@ -31,10 +31,10 @@ const Notebooks: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   }, [notebooks]);
 
   return (
-    <div className="flex w-full">
+    <>
       {isLoading ? (
         // 로딩 중인 경우 로딩 UI 표시
-        <div className="flex w-screen h-screen justify-center items-center">
+        <div className="flex w-full h-screen justify-center items-center">
           <Image src={loadingGif} width={100} height={100} alt="loading gif" />
         </div>
       ) : isEmptyPage ? (
@@ -47,7 +47,7 @@ const Notebooks: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
           {children}
         </>
       )}
-    </div>
+    </>
   );
 };
 
