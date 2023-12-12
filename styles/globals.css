@@ -21,7 +21,10 @@
   }
 }
 
-/* ::-webkit-scrollbar {
+ {
+  /* 스크롤바 CSS*/
+}
+::-webkit-scrollbar {
   width: 14px;
   height: 14px;
 }
@@ -41,4 +44,8 @@
 ::-webkit-scrollbar-track {
   box-shadow: none;
   background-color: transparent;
-} */
+}
+
+.notelist {
+  min-height: 40px !important;
+}

@@ -98,8 +98,8 @@ const NoteList: React.FC<NoteListProps> = ({ data, isNotebookDetailPage }) => {
   };
 
   return (
-    <div className="flex flex-col w-[310px] h-full border-border border-r-[1px] font-light">
-      <div className="flex items-center h-[40px] px-5 bg-primary/5 border-border/90 border-b-[1px]">
+    <div className="flex flex-col w-[310px] h-screen overflow-auto border-border border-r-[1px] font-light">
+      <div className="flex items-center h-[40px] px-5 bg-primary/5 border-border/90 border-b-[1px] notelist">
         {isNotePage ? "All Notes" : matchingNotebook?.name}
       </div>
 
