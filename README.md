@@ -7,11 +7,6 @@
 ```bash
 $ git@github.com:W0N-H0/upnote-clone.git
 $ cd upnote-clone
-```
-
-### Installing Dependencies and Run
-
-```bash
 $ npm istall
 $ npm run dev
 ```
@@ -68,3 +63,48 @@ $ npm run dev
   ```json
   "notebooks": [{"id":1,"name":"1번 노트북","imageIndex":0,"notes":[{"id":1,"title":"1번 노트북","body":" 1번 노트북의 노트입니다. ","content":"{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"1번 노트북\",\"type\":\"text\",\"version\":1},{\"type\":\"linebreak\",\"version\":1},{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"1번 노트북의 노트입니다.\",\"type\":\"text\",\"version\":1},{\"type\":\"linebreak\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}","createdAt":"2023-12-12T17:20:48.189Z","notebook":1}]}]
   ```
+
+## 회고
+
+- 코딩테스트를 진행하며 공부도 해보자는 취지에서 Advanced Feature List 구현하였으나, NOTES 데이터와 NOTEBOOKS 데이터, NOTEBOOK 안에있는 NOTES 데이터를 연동하며 CURD를 구현하는과정에서 백앤드에서 구현해야할 로직들을 프론트 단에서 처리하다보니 코드의 가독성이 떨어지고 최적화, 성능 이슈가 있었던것 같습니다.
+- 특히 notes 페이지에서 특정 NOTEBOOK에 속한 NOTE를 수정하거나 삭제할 경우, </br>
+  (1) 해당 NOTE가 어떤 NOTEBOOK에 속하는지 확인 </br>
+  (2) NOTEBOOKS 배열을 순회하여 해당 NOTE가 들어있는 NOTEBOOKS의 index 찾기</br>
+  (3) NOTEBOOKS[index].notes 속성에 접근하여 filter 메서드를 사용하여 noteId 값을 비교하여 수정과 삭제 진행</br>
+
+  (예시) 삭제 핸들러함수
+
+```javascript
+  const handleDeleteNote = async (noteId: number) => {
+    const shouldDelete = window.confirm("정말 삭제하시겠습니까?");
+    if (shouldDelete) {
+      try {
+        // notes에서 노트 삭제
+        await deleteNote(noteId);
+
+        // notebooks에서 노트 삭제
+        const notebookIndex = notebooks.findIndex((notebook) =>
+          notebook.notes.some((note) => note.id === noteId)
+        );
+        if (notebookIndex === -1) {
+          console.error("Cannot find the notebook to delete note.");
+          return;
+        }
+        const updatedNotebook: Notebook = {
+          ...notebooks[notebookIndex],
+          notes: notebooks[notebookIndex].notes.filter(
+            (note) => note.id !== noteId
+          ),
+        };
+        updateNotebook(notebookIndex, updatedNotebook);
+
+        toast.success("삭제되었습니다.");
+
+        // .....생략
+      }
+    }
+  }
+```
+
+- 또한, 삭제 후 routing 해주는 과정의 복잡한 분기처리와 여러 STATE들을 효율적으로 관리하지 못했던점이 조금 아쉬웠던것 같습니다.
+- NOTES데이터와 NOTEBOOKS 데이터를 연동하는 비교적 간단한 비즈니스 로직을 구현하는 것도 고려해야할 것이 많다는점과, 이를통해 백앤드의 중요성을 다시한번 느낄 수 있었습니다.
